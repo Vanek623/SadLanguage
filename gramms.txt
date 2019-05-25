@@ -1,0 +1,28 @@
+lang: exp_value or exp_goto or exp_collection
+
+exp_value: exp_braces&op or (var or num)&op or exp_braces&(eol or CBR) or exp_braces&(eol or CBR) or var&op&(list or set)&get&(var or num)
+exp_goto: exp_while or exp_for or exp_if or exp_else
+exp_collection: exp_set or exp_list
+
+exp_braces: open_brace_round & exp_value & close_brace_round
+exp_while: while & exp_braces & OBC & lang & CBC
+exp_for: for & OBR & exp_value & eol & exp_value & eol & exp_value & CBR & OBC & lang & CBC
+exp_if: if & exp_braces & OBC & lang & CBC
+exp_else: else & OBC & lang & CBC
+exp_set: set & print & eol or set & col_op & (var or num) & eol
+exp_set: list & print & eol or list & col_op & (var or num) & eol
+
+col_op: add&var or delete&(var or num) or update&num&var or get&num or print
+
+var: $[a-zA-Z]+
+num: [0-9]+
+op: + - * = / < > <= >=
+close_brace_round(CBR): )
+open_brace_round(OBR): (
+open_brace_curly(OBC): {
+close_brace_curly(CBC): }
+add: <+
+print: >>>
+update: <<
+get: >>
+delete: <-
